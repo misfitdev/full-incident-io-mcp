@@ -1,0 +1,9 @@
+[tools]
+node = "20"
+
+[env]
+# Copy server/.env.example to server/.env and fill in BEARER_TOKEN_BEARERAUTH.
+# Set INCIDENT_IO_ALLOW_WRITES=true to enable mutating operations.
+
+[tasks]
+# Prefer the justfile for command running; see `just --list`.

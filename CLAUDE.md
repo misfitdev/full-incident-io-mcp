@@ -53,18 +53,44 @@ bd close <id>         # Complete work
 
 ## Build & Test
 
-_Add your build and test commands here_
+All commands run through `just` (see the `justfile`):
 
 ```bash
-# Example:
-# npm install
-# npm test
+just spec      # Refresh and pin the incident.io OpenAPI spec
+just gen       # Regenerate server/ from the spec, then re-apply local patches
+just install   # Install server dependencies
+just build     # Compile the TypeScript server
+just test      # Run unit tests for the hand-written code
+just check     # Build, then assert the server lists its full tool surface
+just run       # Run the MCP server over stdio
+just hooks     # Install git hooks via lefthook
 ```
 
 ## Architecture Overview
 
-_Add a brief overview of your project architecture_
+This repo is an MCP server for the full incident.io API, generated from
+incident.io's published OpenAPI spec rather than hand-written.
+
+- `scripts/prepare-spec.mjs` fetches the spec and injects a bearer-auth scheme
+  (the published spec omits one), pinning the result to `spec/`.
+- `openapi-mcp-generator` turns that spec into the TypeScript server in
+  `server/` (one MCP tool per API operation).
+- `scripts/post-gen.mjs` re-applies the customizations the generator clobbers
+  on each run, keeping `just gen` idempotent.
+
+The only hand-written, behavior-bearing code is `server/src/auth.ts`, which
+holds the write-gate. It is the one file in `server/` worth reading and testing
+closely; everything else is generated and replaced on regeneration.
 
 ## Conventions & Patterns
 
-_Add your project-specific conventions here_
+- **Regenerate, don't patch generated code.** `server/src/index.ts` and most of
+  `server/` are generated. To change behavior, change the spec
+  (`scripts/prepare-spec.mjs`) or the post-gen step (`scripts/post-gen.mjs`),
+  not the generated output.
+- **`server/src/auth.ts` is the exception** — it is generated once and then
+  preserved across regeneration, so it is safe to hand-edit.
+- **Writes are gated.** Mutating operations only run when
+  `INCIDENT_IO_ALLOW_WRITES` is truthy. Keep that behavior intact.
+- **Tests cover hand-written code only** (`server/src/auth.test.ts`), via
+  Node's built-in `node:test` — no jest.

@@ -1,0 +1,5 @@
+{"id":"int-2e3dc0bc","kind":"field_change","created_at":"2026-06-18T19:07:16.603595Z","actor":"Tucker DeWitt","issue_id":"iam-x63","extra":{"field":"status","new_value":"closed","old_value":"in_progress","reason":"Closed"}}
+{"id":"int-1316e97c","kind":"field_change","created_at":"2026-06-18T19:09:06.493198Z","actor":"Tucker DeWitt","issue_id":"iam-hn3","extra":{"field":"status","new_value":"closed","old_value":"in_progress","reason":"Closed"}}
+{"id":"int-318fb1bc","kind":"field_change","created_at":"2026-06-18T19:10:31.901627Z","actor":"Tucker DeWitt","issue_id":"iam-cz1","extra":{"field":"status","new_value":"closed","old_value":"in_progress","reason":"Closed"}}
+{"id":"int-94797b9a","kind":"field_change","created_at":"2026-06-18T19:10:32.62233Z","actor":"Tucker DeWitt","issue_id":"iam-3g3","extra":{"field":"status","new_value":"closed","old_value":"open","reason":"Closed"}}
+{"id":"int-f22d7f04","kind":"field_change","created_at":"2026-06-19T22:25:16.794797Z","actor":"Tucker","issue_id":"iam-583","extra":{"field":"status","new_value":"closed","old_value":"open","reason":"Closed"}}

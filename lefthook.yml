@@ -1,0 +1,40 @@
+# Lefthook is the single git-hook manager for this repo.
+#
+# NOTE: `bd init` set core.hooksPath to .beads/hooks/, which would otherwise
+# make git ignore lefthook's hooks entirely. `lefthook install` resets
+# core.hooksPath, so we re-run the beads sync logic here as explicit steps
+# (`bd hooks run <hook>`) instead. This keeps beads' auto-export/sync working
+# while letting lefthook own the hooks. Run `just hooks` after cloning.
+
+pre-commit:
+  parallel: false
+  commands:
+    server-test:
+      glob: "server/src/**/*"
+      run: cd server && npm test
+    beads:
+      run: bd hooks run pre-commit
+      # Don't block commits if bd isn't installed on this machine.
+      skip:
+        - run: "! command -v bd >/dev/null 2>&1"
+
+pre-push:
+  commands:
+    beads:
+      run: bd hooks run pre-push
+      skip:
+        - run: "! command -v bd >/dev/null 2>&1"
+
+post-merge:
+  commands:
+    beads:
+      run: bd hooks run post-merge
+      skip:
+        - run: "! command -v bd >/dev/null 2>&1"
+
+post-checkout:
+  commands:
+    beads:
+      run: bd hooks run post-checkout
+      skip:
+        - run: "! command -v bd >/dev/null 2>&1"
